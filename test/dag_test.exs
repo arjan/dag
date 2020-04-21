@@ -12,7 +12,10 @@ defmodule DAGgTest do
     {:ok, dag1} = add_vertex(dag, :a)
     {:ok, ^dag1} = add_vertex(dag1, :a)
 
-    {:ok, _dag2} = add_vertex(dag1, :b)
+    assert [:a] == vertices(dag1)
+
+    {:ok, dag2} = add_vertex(dag1, :b)
+    assert [:a, :b] == vertices(dag2)
   end
 
   test "add edge" do
@@ -84,6 +87,27 @@ defmodule DAGgTest do
       |> ok
 
     assert ~w(d c b a)a = topsort(dag)
+  end
+
+  test "components" do
+    dag =
+      new()
+      |> ok(&add_vertex(&1, :a))
+      |> ok(&add_vertex(&1, :b))
+      |> ok
+
+    assert [ma, mb] = Enum.sort(components(dag))
+    assert [:a] = vertices(ma)
+    assert [:b] = vertices(mb)
+
+    dag =
+      new()
+      |> ok(&add_vertex(&1, :a))
+      |> ok(&add_vertex(&1, :b))
+      |> ok(&add_edge(&1, :a, :b))
+      |> ok
+
+    assert [^dag] = components(dag)
   end
 
   ###
