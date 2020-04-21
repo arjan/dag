@@ -2,7 +2,7 @@
 
 Directed Acyclic Graph (DAG) implementation in Elixir
 
-As opposed to Erlang's [digraph](digraph) module, which uses an ETS
+As opposed to Erlang's [digraph][digraph] module, which uses an ETS
 table, this library implements a DAG in a basic Elixir `%DAG{}`
 struct, containing vertices and edges.
 
